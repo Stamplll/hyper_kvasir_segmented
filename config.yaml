@@ -1,0 +1,38 @@
+# Hyper-Kvasir Segmentation — central configuration.
+# ทุกสคริปต์อ่านค่าจากไฟล์นี้ ถ้าจะเปลี่ยนค่า ให้แก้ที่นี่ ไม่ต้องแก้ในโค้ด
+
+seed: 42
+
+paths:
+  raw_zip: "data/raw/hyper-kvasir-segmented-images.zip"
+  raw_extract_dir: "data/raw_dataset"
+  processed_dir: "data/processed"
+  weights_dir: "weights"
+  runs_dir: "runs"
+
+dataset:
+  class_names: ["polyp"]
+  splits:
+    train: 0.70
+    val: 0.20
+    test: 0.10
+  min_contour_area: 20        # px^2 กรอง noise เล็กๆออกจาก mask
+  polygon_epsilon_ratio: 0.001  # ความละเอียดของ approxPolyDP
+
+model:
+  weights: "yolo11n-seg.pt"    # เปลี่ยนเป็น yolo11s-seg.pt / yolo11m-seg.pt ได้ถ้าต้องการโมเดลใหญ่ขึ้น
+  img_size: 640
+
+training:
+  epochs: 100
+  batch_size: 16
+  patience: 15      # early stopping — ของเดิมไม่มี เพิ่มเข้ามาเพราะ data มีแค่ ~1,000 ภาพ เสี่ยง overfit
+  device: "auto"
+
+evaluation:
+  conf_threshold: 0.25   # ใช้ค่ามาตรฐานตอน evaluate (ไม่ใช่ 0.79 ซึ่งเหมาะกับ inference มากกว่า)
+  iou_threshold: 0.5
+
+inference:
+  conf_threshold: 0.79
+  img_size: 640
