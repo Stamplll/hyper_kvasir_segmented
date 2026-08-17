@@ -51,6 +51,12 @@ source venv/bin/activate      # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+ถ้าจะเทรนบน GPU บน Windows ให้ติดตั้ง PyTorch แบบ CUDA แยกอีกครั้ง:
+```bash
+python -m pip install --upgrade --force-reinstall --index-url https://download.pytorch.org/whl/cu121 torch torchvision
+```
+ถ้า `pip install -r requirements.txt` ลง `torch` แบบ `+cpu` มาก่อน คำสั่งนี้จะช่วยสลับเป็น build ที่ใช้ GPU ได้
+
 ## วิธีใช้งาน
 
 ### 1. เตรียมข้อมูล
@@ -63,6 +69,8 @@ python scripts/prepare_dataset.py
 ```bash
 python scripts/train.py
 ```
+(ถ้าต้องการบังคับใช้ GPU ตัวแรก ใช้ `python scripts/train.py --device 0`)
+(ถ้าจะบังคับ CPU ใช้ `python scripts/train.py --device cpu`)
 (ถ้ายังไม่เคยรัน prepare_dataset จะรันให้อัตโนมัติก่อนเทรน)
 
 ผลลัพธ์ (weights, กราฟ loss, confusion matrix) บันทึกที่ `runs/segment/polyp_detection`

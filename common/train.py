@@ -12,8 +12,10 @@ from common.timing import timed_stage
 from common.yolo_trainer import get_best_weights_path, train_yolo_seg
 
 
-def run_training(config_path: str | None = None):
+def run_training(config_path: str | None = None, device: str | None = None):
     cfg = load_config(config_path)
+    if device is not None:
+        cfg["training"]["device"] = device
     set_seed(cfg["seed"])
 
     dataset_yaml = resolve_path(cfg["paths"]["processed_dir"]) / "dataset.yaml"
