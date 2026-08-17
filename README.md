@@ -45,17 +45,32 @@ hyper-kvasir-segmented-modular/
 
 ## การติดตั้ง
 
+### 1. สร้าง virtual environment และติดตั้ง dependencies
 ```bash
 python -m venv venv
 source venv/bin/activate      # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-ถ้าจะเทรนบน GPU บน Windows ให้ติดตั้ง PyTorch แบบ CUDA แยกอีกครั้ง:
+### 2. ติดตั้ง PyTorch แบบ CUDA (จำเป็นถ้าจะเทรนบน GPU)
+> **⚠️ ขั้นตอนนี้จำเป็น ไม่ใช่ทางเลือก (โดยเฉพาะบน Windows)**
+> `pip install -r requirements.txt` ในขั้นตอนที่ 1 มักจะดึง PyTorch เวอร์ชัน **CPU-only**
+> (`+cpu`) มาลงโดยอัตโนมัติ ถ้าข้ามขั้นตอนนี้ไป โค้ดจะยังรันได้ปกติแต่ **จะไม่ใช้ GPU เลย**
+> แม้เครื่องจะมีการ์ดจอ — การเทรนจะช้าลงมาก (หลักชั่วโมง → หลักนาทีต่อ epoch ต่างกันได้หลายเท่า)
+> โดยไม่มี error หรือคำเตือนใดๆ ให้สังเกต
+
 ```bash
 python -m pip install --upgrade --force-reinstall --index-url https://download.pytorch.org/whl/cu121 torch torchvision
 ```
-ถ้า `pip install -r requirements.txt` ลง `torch` แบบ `+cpu` มาก่อน คำสั่งนี้จะช่วยสลับเป็น build ที่ใช้ GPU ได้
+คำสั่งนี้จะบังคับถอนแล้วติดตั้ง `torch`/`torchvision` build ที่คอมไพล์มาพร้อม CUDA 12.1 ทับตัว
+`+cpu` ที่อาจติดมาจากขั้นตอนที่ 1 (ต้องมี NVIDIA GPU + driver ที่รองรับ CUDA 12.1 ขึ้นไป)
+
+### 3. ตรวจสอบว่า PyTorch มองเห็น GPU แล้ว
+```bash
+python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+```
+ถ้าได้ผลลัพธ์ `True` แปลว่าพร้อมเทรนบน GPU แล้ว ถ้าได้ `False` ให้กลับไปรันคำสั่งในขั้นตอนที่ 2
+ใหม่ และตรวจสอบว่าเวอร์ชัน CUDA driver ในเครื่องตรงกับ `cu121` หรือไม่ (เช็คได้ด้วย `nvidia-smi`)
 
 ## วิธีใช้งาน
 
