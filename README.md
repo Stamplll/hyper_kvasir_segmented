@@ -83,7 +83,7 @@ python scripts/predict.py --source path/to/image_or_video --weights weights/poly
 1. **แก้บั๊กใน `find_dir()`** — ต้นฉบับ match โฟลเดอร์ `images` ผิดพลาดกับโฟลเดอร์แม่
    `segmented-images` (เพราะ "image" เป็น substring ของชื่อนั้นด้วย) ทำให้ได้ path ผิด
    ตั้งแต่ก้าวแรก เวอร์ชันนี้เช็ค exact-name match ก่อน แล้วค่อย fallback เป็น substring
-   — **ทดสอบรันจริงกับ zip ที่อัปโหลดแล้ว** ได้ 700/200/100 ภาพครบทุกไฟล์ ไม่มีข้ามเลย
+   — **ทดสอบรันจริงกับ zip ที่อัปโหลดแล้ว** ได้ 700/150/150 ภาพครบทุกไฟล์ ไม่มีข้ามเลย
 2. **เพิ่ม `patience` (early stopping)** ใน config — ต้นฉบับเทรน 100 epochs แบบไม่มี
    early stopping เลย ซึ่งเสี่ยง overfit เพราะมีข้อมูลแค่ ~1,000 ภาพ
 3. **เพิ่ม `common/evaluate.py`** — ต้นฉบับมีแค่ train/predict ไม่มีขั้นตอนวัดผลบน test
