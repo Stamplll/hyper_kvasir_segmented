@@ -14,8 +14,8 @@ dataset:
   class_names: ["polyp"]
   splits:
     train: 0.70
-    val: 0.20
-    test: 0.10
+    val: 0.15
+    test: 0.15
   min_contour_area: 20        # px^2 กรอง noise เล็กๆออกจาก mask
   polygon_epsilon_ratio: 0.001  # ความละเอียดของ approxPolyDP
 
